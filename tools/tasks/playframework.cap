@@ -1,0 +1,167 @@
+set :application, fetch(:application, 'my_application')
+set :deploy_to, fetch(:deploy_to, "/var/lib/#{fetch(:application)}")
+set :log_path, fetch(:log_path, 'logs')
+set :root_path, fetch(:root_path, 'target/universal/stage')
+set :app_pid, fetch(:app_pid, "#{shared_path}/pids/RUNNING_PID")
+set :prod_start_args, fetch(:prod_start_args, "")
+
+namespace :play do
+
+  desc 'deploy playframework application.'
+  task :updating => 'deploy:new_release_path' do
+    invoke "#{scm}:create_release"
+    invoke 'play:package'
+  end
+
+  desc 'Produces a main artifact, such as a binary jar.'
+  task :package do
+    on roles(:app) do
+      execute <<-EOH
+        cd #{release_path}
+        play stage
+      EOH
+    end
+  end
+
+  task :publishing do
+    invoke 'play:symlink:shared'
+    invoke 'deploy:symlink:release'
+
+    on roles(:app) do
+      start_sh = StringIO.new <<-EOH
+#!/bin/bash
+nohup bash -c "cd #{current_path}/#{fetch(:root_path)} && bin/#{fetch(:application).downcase} $*" &> /dev/null 2>&1 & sleep 2
+      EOH
+      stop_sh = StringIO.new <<-EOH
+#!/bin/bash
+pid=`cat #{fetch(:app_pid)} 2> /dev/null`
+if [ "$pid" == "" ]; then echo '#{fetch(:application)} is not running'; exit 0; fi
+echo 'Stopping #{fetch(:application)}...'
+kill -SIGTERM $pid
+      EOH
+      envvars_sh = StringIO.new <<-EOH
+#!/bin/bash
+export", "#{current_path}/envvars.sh
+      EOH
+      upload! start_sh, "#{current_path}/start.sh", :mode => '0755'
+      upload! stop_sh, "#{current_path}/stop.sh", :mode => '0755'
+      upload! envvars_sh, "#{current_path}/envvars.sh", :mode => '0755'
+    end
+  end
+
+  desc 'print environment variables.'
+  task :envvars do
+    on roles(:app) do
+      execute "#{current_path}/envvars.sh"
+    end
+  end
+
+  desc 'run test.'
+  task :tests do
+    on roles(:app) do
+      execute <<-EOH
+        cd #{current_path}
+        play test
+      EOH
+    end
+  end
+
+  desc 'stop the application.'
+  task :stop do
+    on roles(:app) do
+      execute "#{current_path}/stop.sh"
+    end
+  end
+
+  desc 'production start the application.'
+  task :start_prod do
+    on roles(:app) do
+      execute "#{current_path}/start.sh #{fetch(:prod_start_args)} -Dpidfile.path=#{fetch(:app_pid)}"
+    end
+  end
+
+  desc 'development start the application.'
+  task :start_dev do
+    on roles(:app) do
+      execute "#{current_path}/start.sh"
+    end
+  end
+
+  namespace :symlink do
+    desc 'Symlink files and directories from shared to release'
+    task :shared do
+      invoke 'play:symlink:linked_files'
+      invoke 'play:symlink:linked_dirs'
+    end
+
+    desc 'Symlink linked directories'
+    task :linked_dirs do
+      next unless any? :linked_dirs
+      on release_roles :all do
+        execute :mkdir, '-pv', linked_dir_parents(release_path)
+
+        fetch(:linked_dirs).each do |dir|
+          target = release_path.join(fetch(:root_path), dir)
+          source = shared_path.join(dir)
+          unless test "[ -L #{target} ]"
+            if test "[ -d #{target} ]"
+              execute :rm, '-rf', target
+            end
+            execute :ln, '-s', source, target
+          end
+        end
+      end
+    end
+
+    desc 'Symlink linked files'
+    task :linked_files do
+      next unless any? :linked_files
+      on release_roles :all do
+        execute :mkdir, '-pv', linked_file_dirs(release_path)
+
+        fetch(:linked_files).each do |file|
+          target = release_path.join(fetch(:root_path), file)
+          source = shared_path.join(file)
+          unless test "[ -L #{target} ]"
+            if test "[ -f #{target} ]"
+              execute :rm, target
+            end
+            execute :ln, '-s', source, target
+          end
+        end
+      end
+    end
+  end
+end
+
+Rake::Task[:deploy].clear
+desc 'Deploy a new release.'
+task :deploy do
+  set(:deploying, true)
+  %w{ deploy:starting deploy:started
+      play:updating deploy:updated
+      play:publishing deploy:published
+      deploy:finishing deploy:finished deploy:restart }.each do |task|
+    invoke "#{task}"
+  end
+end
+
+namespace :deploy do
+    desc 'playframework netty server production start.'
+    task :start do
+        invoke "play:start_prod";
+    end
+
+    desc 'playframework netty server stop.'
+    task :stop do
+        invoke 'play:stop'
+    end
+
+    desc 'playframework server restart.'
+    task :restart do
+        # invoke 'deploy:stop';
+        # invoke 'deploy:start';
+    end
+end
+
+task default: :deploy
