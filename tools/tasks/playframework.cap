@@ -159,8 +159,8 @@ namespace :deploy do
 
     desc 'playframework server restart.'
     task :restart do
-        # invoke 'deploy:stop';
-        # invoke 'deploy:start';
+        invoke 'deploy:stop';
+        invoke 'deploy:start';
     end
 end
 
