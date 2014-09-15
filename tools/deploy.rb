@@ -6,11 +6,11 @@ set :repo_url,  'git@github.com:ispern/ExampleApp.git'
 set :scm, :git
 
 set :format, :pretty
-set :log_level, :debug
+# set :log_level, :debug
 set :pty, true
 
 # The server's user for deploys
-set :user, 'sposta'
+set :user, 'example'
 set :use_sudo, true
 #set :normalize_asset_timestamps, false
 

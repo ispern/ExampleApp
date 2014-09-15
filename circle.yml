@@ -1,0 +1,68 @@
+## Customize the test machine
+machine:
+  timezone:
+    Asia/Tokyo
+
+  # Override /etc/hosts
+#  hosts:
+#    circlehost: 127.0.0.1
+#    dev.mycompany.com: 127.0.0.1
+
+  # Add some environment variables
+#  environment:
+#    CIRCLE_ENV: test
+#    DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
+
+## Customize dependencies
+dependencies:
+  pre:
+    - bundle install
+    - cd ui/Front && npm install && bower install
+
+  # we automatically cache and restore many dependencies between
+  # builds. If you need to, you can add custom paths to cache:
+  cache_directories:
+      - "~/.m2"
+      - "~/.ivy2"
+      - "~/.sbt"
+      - "ui/Front/node_modules"
+      - "ui/Front/app/bower_components"
+
+## Customize database setup
+#database:
+#  override:
+#    # replace CircleCI's generated database.yml
+#    - cp config/database.yml.ci config/database.yml
+#    - bundle exec rake db:create db:schema:load
+
+## Customize test commands
+#test:
+#  override:
+#    - phpunit test/unit-tests # use PHPunit for testing
+#  post:
+#    - bundle exec rake jasmine:ci: # add an extra test type
+#        environment:
+#          RAILS_ENV: test
+#          RACK_ENV: test
+
+## Customize deployment commands
+#deployment:
+#  staging:
+#    branch: deployment/staging
+#
+deployment:
+  automerge:
+    branch: [master]
+    commands:
+      - ./merge_to_deployment_staging.sh
+  staging:
+      branch: deployment/staging
+      commands:
+        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【START】ステージング環境へデプロイするよ ...((((*ФωФ)ﾉ ｺﾞｰｺﾞｰ♪' -d 'username=circle_ci' -d 'token=9gwiT4AnH2n89xTfAlLXQWYr
+        - bundle exec cap stg deploy
+        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【END】ステージング環境完了！ (≧∇≦)b' -d 'username=circle_ci' -d 'token=9gwiT4AnH2n89xTfAlLXQWYr
+### Custom notifications
+#notify:
+#  webhooks:
+#    # A list of hashes representing hooks. Only the url field is supported.
+#    - url: https://someurl.com/hooks/circle

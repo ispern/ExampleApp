@@ -7,12 +7,12 @@ import views.html.*;
 
 public class Application extends Controller {
 
-    public static Result index() {
-        return ok(index.render("Your new application is ready."));
+    public static Result adminIndex() {
+        return ok(views.html.admin.index.render());
     }
 
-    public static Result add() {
-        return ok(index.render("add screen"));
+    public static Result frontIndex() {
+        return ok(views.html.front.index.render());
     }
 
 }
