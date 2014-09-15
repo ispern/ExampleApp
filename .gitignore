@@ -13,6 +13,5 @@ dist
 /.project
 /RUNNING_PID
 /.settings
-public/temp
-public/.sass-cache
-public/Admin
+public/*
+!public/.gitkeep
