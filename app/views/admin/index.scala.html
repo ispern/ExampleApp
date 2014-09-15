@@ -1,0 +1,16 @@
+@()
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Example App</title>
+        @if(play.Play.isDev) {
+            <script id="microloader" src="@ui.routes.Routing.adminAt("bootstrap.js")"></script>
+        } else {
+            <script type="text/javascript" src="@ui.routes.Routing.adminAt("microloader.js")"></script>
+        }
+    </head>
+    <body></body>
+</html>
