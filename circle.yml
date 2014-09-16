@@ -56,7 +56,7 @@ deployment:
     commands:
       - git checkout deployment/staging
       - git merge origin master
-      - git push origin deployment/stging
+      - git push origin deployment/staging
 #  staging:
 #      branch: deployment/staging
 #      commands:
