@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 set :application, 'ExampleApp'
-set :repo_url,  'git@github.com:ispern/ExampleApp.git'
+set :repo_url,  'https://github.com/ispern/ExampleApp.git'
 
 set :scm, :git
 
