@@ -2,13 +2,13 @@
 set :stage, :prod
 set :branch, 'deployment/production'
 
-set :ssh_options, {
-    keys: %w(tools/keys/sposta_web),
-    forward_agent: true,
-    auth_methods: %w(publickey),
-    passphrase: 'N4DbVTAB3Naz',
-    keys_only: true
-}
+# set :ssh_options, {
+#     keys: %w(tools/keys/sposta_web),
+#     forward_agent: true,
+#     auth_methods: %w(publickey),
+#     passphrase: 'N4DbVTAB3Naz',
+#     keys_only: true
+# }
 
 server '133.242.50.42', user: 'sposta', roles: %w{web app}
 

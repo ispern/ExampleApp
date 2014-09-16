@@ -12,12 +12,6 @@ set :pty, true
 # The server's user for deploys
 set :user, 'example'
 set :use_sudo, true
-#set :normalize_asset_timestamps, false
-
-set :ssh_options, {
-  :keys => [File.join(ENV['HOME'], '.ssh', 'id_circleci_github'), File.join(ENV['HOME'], '.ssh', 'id_54.68.152.67')],
-  :forward_agent => true
-}
 
 set :deploy_via, :remote_cache
 set :keep_releases, 5
