@@ -5,7 +5,7 @@ machine:
   timezone:
     Asia/Tokyo
   services:
-    mysql
+    - mysql
 
   # Override /etc/hosts
 #  hosts:
