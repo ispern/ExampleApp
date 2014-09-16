@@ -1,7 +1,11 @@
 ## Customize the test machine
 machine:
+  java:
+    version: oraclejdk7
   timezone:
     Asia/Tokyo
+  services:
+    mysql
 
   # Override /etc/hosts
 #  hosts:
