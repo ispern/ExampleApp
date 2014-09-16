@@ -57,12 +57,12 @@ deployment:
       - git checkout deployment/staging
       - git merge origin master
       - git push origin deployment/staging
-#  staging:
-#      branch: deployment/staging
-#      commands:
-#        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【START】ステージング環境へデプロイするよ ...((((*ФωФ)ﾉ ｺﾞｰｺﾞｰ♪' -d 'username=circle_ci' -d 'token=9gwiT4AnH2n89xTfAlLXQWYr
-#        - bundle exec cap stg deploy
-#        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【END】ステージング環境完了！ (≧∇≦)b' -d 'username=circle_ci' -d 'token=9gwiT4AnH2n89xTfAlLXQWYr
+  staging:
+      branch: deployment/staging
+      commands:
+        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【START】ステージング環境へデプロイするよ ...((((*ФωФ)ﾉ ｺﾞｰｺﾞｰ♪' -d 'username=circle_ci' -d 'token=9gwiT4AnH2n89xTfAlLXQWYr
+        - bundle exec cap stg deploy
+        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【END】ステージング環境完了！ (≧∇≦)b' -d 'username=circle_ci' -d 'token=9gwiT4AnH2n89xTfAlLXQWYr
 ### Custom notifications
 #notify:
 #  webhooks:
