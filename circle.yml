@@ -60,9 +60,9 @@ deployment:
   staging:
       branch: deployment/staging
       commands:
-        - curl -X POST --data-urlencode 'payload={"channel": "#gitlab-notiy-test", "username": "CircleCi", "text": "【START】ステージング環境へデプロイするよ ...((((*ФωФ)ﾉ ｺﾞｰｺﾞｰ♪" }' https://wiz-net.slack.com/services/hooks/incoming-webhook?token=9gwiT4AnH2n89xTfAlLXQWYr
+        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【START】ステージング環境へデプロイするよ ...((((*ФωФ)ﾉ ｺﾞｰｺﾞｰ♪' -d 'username=circleci' -d 'token=xoxp-2440505178-2440505180-2668095766-fc8442'
         - bundle exec cap stg deploy
-        - curl -X POST --data-urlencode 'payload={"channel": "#gitlab-notiy-test", "username": "CircleCi", "text": "【END】ステージング環境デプロイ完了！ (≧∇≦)b" }' https://wiz-net.slack.com/services/hooks/incoming-webhook?token=9gwiT4AnH2n89xTfAlLXQWYr
+        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【END】ステージング環境デプロイ完了！ (≧∇≦)b' -d 'username=circleci' -d 'token=xoxp-2440505178-2440505180-2668095766-fc8442'
 ### Custom notifications
 #notify:
 #  webhooks:
