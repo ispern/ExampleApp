@@ -20,10 +20,10 @@ machine:
 ## Customize dependencies
 dependencies:
   pre:
-    - sh tools/circleci/SenchaCmdDownload.sh
+    - cd tools/circleci && sh SenchaCmdDownload.sh
     - npm install -g grunt-cli bower
     - bundle install
-    - cd ui/Front && npm install && bower install
+    - cd ../../ui/Front && npm install && bower install
 
   # we automatically cache and restore many dependencies between
   # builds. If you need to, you can add custom paths to cache:
