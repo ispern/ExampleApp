@@ -1,5 +1,5 @@
 /*global Front, Backbone*/
-define(['backbone', 'models/Blog'], function(Backbone, Blog) {
+define(['backbone', 'models/blog'], function(Backbone, Blog) {
     'use strict';
 
     return Backbone.Collection.extend({
