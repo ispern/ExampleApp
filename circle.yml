@@ -20,12 +20,14 @@ machine:
 ## Customize dependencies
 dependencies:
   pre:
+    - npm install -g grunt-cli
     - bundle install
     - cd ui/Front && npm install && bower install
 
   # we automatically cache and restore many dependencies between
   # builds. If you need to, you can add custom paths to cache:
   cache_directories:
+      - "~/.npm"
       - "~/.m2"
       - "~/.ivy2"
       - "~/.sbt"
@@ -58,6 +60,7 @@ deployment:
   automerge:
     branch: [master]
     commands:
+      - cd ui && grunt build && git add . && git commit -m 'grunt build by circle ci.' && git push origin master
       - git checkout deployment/staging
       - git merge origin master
       - git push origin deployment/staging
