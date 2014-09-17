@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 set :application, 'ExampleApp'
-set :repo_url,  'git@github.com:ispern/ExampleApp.git'
+set :repo_url,  'https://github.com/ispern/ExampleApp.git'
 
 set :scm, :git
 
@@ -12,12 +12,6 @@ set :pty, true
 # The server's user for deploys
 set :user, 'example'
 set :use_sudo, true
-#set :normalize_asset_timestamps, false
-
-set :ssh_options, {
-  :keys => [File.join(ENV['HOME'], '.ssh', 'id_circleci_github')],
-  :forward_agent => true
-}
 
 set :deploy_via, :remote_cache
 set :keep_releases, 5
