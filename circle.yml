@@ -20,7 +20,8 @@ machine:
 ## Customize dependencies
 dependencies:
   pre:
-    - npm install -g grunt-cli
+    - sh tools/circleci/SenchaCmdDownload.sh
+    - npm install -g grunt-cli bower
     - bundle install
     - cd ui/Front && npm install && bower install
 
@@ -31,6 +32,7 @@ dependencies:
       - "~/.m2"
       - "~/.ivy2"
       - "~/.sbt"
+      - "~/bin/"
       - "ui/Front/node_modules"
       - "ui/Front/app/bower_components"
 
