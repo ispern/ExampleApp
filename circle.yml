@@ -20,7 +20,7 @@ machine:
 ## Customize dependencies
 dependencies:
   pre:
-    - npm install -g grunt-cli bower
+#    - npm install -g grunt-cli bower
     - bundle install
     - cd ../../ui/Front && npm install && bower install
 
