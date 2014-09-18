@@ -63,7 +63,7 @@ deployment:
   automerge:
     branch: [master]
     commands:
-      - cd ui/Front && grunt build && git add . && git commit -m 'grunt build by circle ci.' && git push origin master
+      - cd ui/Front && grunt build && cd ../../ && git add . && git commit -m 'grunt build by circle ci.' && git push origin master
       - git checkout deployment/staging
       - git merge origin master
       - git push origin deployment/staging
