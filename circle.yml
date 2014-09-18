@@ -64,6 +64,10 @@ deployment:
         - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【START】ステージング環境へデプロイするよ ...((((*ФωФ)ﾉ ｺﾞｰｺﾞｰ♪' -d 'username=circleci' -d 'token=xoxp-2440505178-2440505180-2668095766-fc8442'  -d 'icon_url=http://www.wiz-net.com/tachikoma2.gif'
         - bundle exec cap stg deploy
         - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【END】ステージング環境デプロイ完了！ (≧∇≦)b' -d 'username=circleci' -d 'token=xoxp-2440505178-2440505180-2668095766-fc8442'  -d 'icon_url=http://www.wiz-net.com/tachikoma2.gif'
+  feature:
+    branch: /feature\/.*/
+    commands:
+        - printenv
 
 ### Custom notifications
 #notify:
