@@ -22,11 +22,7 @@ machine:
 ## Customize dependencies
 dependencies:
   pre:
-    - git config --global user.name "Circle CI"
-    - git config --global user.email "bot@wiz-net.jp"
-    - npm install -g grunt-cli bower
     - bundle install
-    - cd ui/Front && npm install && bower install
 
   # we automatically cache and restore many dependencies between
   # builds. If you need to, you can add custom paths to cache:
@@ -55,24 +51,20 @@ dependencies:
 #          RACK_ENV: test
 
 ## Customize deployment commands
-#deployment:
-#  staging:
-#    branch: deployment/staging
-#
 deployment:
   automerge:
     branch: [master]
     commands:
-      - cd ui/Front && grunt build && cd ../../ && git add . && git commit -m 'grunt build by circle ci.' && git push origin master
       - git checkout deployment/staging
       - git merge origin master
       - git push origin deployment/staging
   staging:
       branch: deployment/staging
       commands:
-        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【START】ステージング環境へデプロイするよ ...((((*ФωФ)ﾉ ｺﾞｰｺﾞｰ♪' -d 'username=circleci' -d 'token=xoxp-2440505178-2440505180-2668095766-fc8442'
+        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【START】ステージング環境へデプロイするよ ...((((*ФωФ)ﾉ ｺﾞｰｺﾞｰ♪' -d 'username=circleci' -d 'token=xoxp-2440505178-2440505180-2668095766-fc8442'  -d 'icon_url=http://www.wiz-net.com/tachikoma2.gif'
         - bundle exec cap stg deploy
-        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【END】ステージング環境デプロイ完了！ (≧∇≦)b' -d 'username=circleci' -d 'token=xoxp-2440505178-2440505180-2668095766-fc8442'
+        - curl https://slack.com/api/chat.postMessage -X POST -d 'channel=#gitlab-notiy-test' -d 'text=【END】ステージング環境デプロイ完了！ (≧∇≦)b' -d 'username=circleci' -d 'token=xoxp-2440505178-2440505180-2668095766-fc8442'  -d 'icon_url=http://www.wiz-net.com/tachikoma2.gif'
+
 ### Custom notifications
 #notify:
 #  webhooks:
